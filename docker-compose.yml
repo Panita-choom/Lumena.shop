@@ -1,0 +1,51 @@
+services:
+  clamav:
+    image: clamav/clamav:latest
+    container_name: clamav
+    environment:
+      CLAMD_CONF_MaxFileSize: 2000M
+      CLAMD_CONF_MaxScanSize: 2000M
+      CLAMD_CONF_StreamMaxLength: 2000M
+    ports:
+      - "3310:3310"
+    restart: always
+    networks:
+    - app-network
+
+  web:
+    build: .
+    container_name: lumena-shop
+
+    env_file:
+      - .env
+
+    environment:
+      - DATABASE_URL=mysql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:3306/${DB_NAME}
+      - NODE_ENV=production
+
+    restart: always
+
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5" 
+          memory: "6144M" 
+
+    ports:
+      - "3000:3000"
+
+    networks:
+      - app-network
+
+    depends_on:
+    - clamav
+
+networks:
+  app-network:
+    driver: bridge
+
+################docker-compose command##################################
+# docker compose up --build   (for fix Dockerfile or source code)
+# docker compose up           (for run image)
+# docker compose down         (for stop image)
+# docker compose logs -f      (loging)

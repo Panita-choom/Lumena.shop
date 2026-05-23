@@ -1,0 +1,14 @@
+# ไฟล์และโฟลเดอร์สำหรับ Node.js
+node_modules
+npm-debug.log
+.env
+.DS_Store
+
+# ไฟล์สำหรับ Git
+.git
+.gitignore
+
+# ไฟล์และโฟลเดอร์ build/dist ที่ไม่ได้ใช้
+dist/
+build/
+coverage/
